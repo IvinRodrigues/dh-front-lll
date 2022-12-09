@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useReducer } from 'react'
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { DecimaQuintaAulaItem } from '../../components/DecimaQuintaAulaItem'
 import { useTheme } from '../../hooks/useTheme'
@@ -9,9 +9,48 @@ import './style.scss'
 
 export function DecimaQuintaAula() {
 
+    const navigate = useNavigate()
     const [locations, setLocations] = useState([])
-    const [cep, setCep] = useState('')
 
+
+
+
+
+
+
+
+    // const [counter, setCounter] = useState(0)
+
+    // function addCounter() {
+
+    //     setCounter(counter + 1)
+
+    // }
+
+    // function removeCounter() {
+
+    //     setCounter(counter - 1)
+
+    // }
+
+    function counterReducer(state, action) {
+
+        switch (action.type) {
+
+            case 'add':
+                return state + 1
+
+            case 'remove':
+                return state - 1
+
+            default:
+                throw new Error('Action não encontrada')
+
+        }
+
+    }
+    const [counter, dispatchCounter] = useReducer(counterReducer, 0)
+    const [cep, setCep] = useState('')
     const { theme } = useTheme()
 
     // const { id } = useParams()
@@ -26,14 +65,14 @@ export function DecimaQuintaAula() {
 
         setCep(cepRecieved)
 
-        if(cepRecieved.length === 8) {
+        if (cepRecieved.length === 8) {
 
             fetch(`https://viacep.com.br/ws/${cepRecieved}/json/`).then(
                 response => {
                     response.json().then(
                         address => {
 
-                            if(address.erro !== undefined) {
+                            if (address.erro !== undefined) {
 
                                 // Deu erro
 
@@ -60,11 +99,63 @@ export function DecimaQuintaAula() {
 
     }
 
-    return(
+    function redirectUser() {
+
+        navigate('/to-do')
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const questions = [
+        {
+            title: 'Pergunta 1?', answers: [
+                { title: 'Resposta 1 da primeira pergunta' },
+                { title: 'Resposta 2 da primeira pergunta' },
+            ]
+        }, {
+            title: 'Pergunta 2?', answers: [
+                { title: 'Resposta 1 da segunda pergunta' },
+                { title: 'Resposta 2 da segunda pergunta' },
+            ]
+        }
+    ]
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+    const [answers, setAnswers] = useState([])
+
+
+
+
+    return (
 
         <div className={`decima-quarta-aula-component ${theme}`}>
 
-            <form>
+            {/* <p>O número atual do contador é: {counter}</p>
+
+            <button onClick={() => dispatchCounter({ type: 'add' })}>Adicionar</button>
+            <button onClick={() => dispatchCounter({ type: 'removedfsfsdf' })}>Remover</button> */}
+
+            <h1>{questions[currentQuestionIndex].title}</h1>
+
+            {
+                questions[currentQuestionIndex].answers.map(
+                    answer => ( <p>{answer.title}</p> )
+                )
+            }
+
+            <button onClick={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}>Proxima pergunta</button>
+
+            {/* <form>
 
                 <h1>Cadastrar endereços</h1>
 
@@ -98,7 +189,7 @@ export function DecimaQuintaAula() {
                     )
                 }
 
-            </section>
+            </section> */}
 
         </div>
 

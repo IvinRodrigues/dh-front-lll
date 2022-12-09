@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useReducer, useState } from 'react'
 import './style.scss'
 import { SetimaAulaCardProduto } from "../../components/SetimaAulaCardProduto"
+import { useEffect } from 'react'
 
 export function SetimaAula() {
 
@@ -8,7 +9,12 @@ export function SetimaAula() {
     const [precoProduto, setPrecoProduto] = useState('')
     const [fotoProduto, setFotoProduto] = useState('')
     const [formularioErro, setFormularioErro] = useState(false)
-    const [allProducts, setAllProducts] = useState([
+    const newProduct = {
+        name: 'Playstation 4',
+        price: '2.000',
+        picture: 'https://http2.mlstatic.com/D_NQ_NP_798586-MLA40076060236_122019-W.webp'
+    }
+    const productsData = [
         {
             id: 1,
             name: 'Xbox',
@@ -27,13 +33,32 @@ export function SetimaAula() {
             price: '2.000',
             picture: 'https://http2.mlstatic.com/D_NQ_NP_771705-MLA40692342174_022020-W.webp'
         }
-    ])
+    ]
 
-    const newProduct = {
-        name: 'Playstation 4',
-        price: '2.000',
-        picture: 'https://http2.mlstatic.com/D_NQ_NP_798586-MLA40076060236_122019-W.webp'
+    function productsReducer(state, action) {
+
+        switch(action.type) {
+
+            case 'add':
+                return [...state, action.payload]
+
+            case 'remove':
+                return state.filter(item => item.id !== action.payload)
+
+            default:
+                throw new Error('Action não encontrada')
+
+        }
+
     }
+
+    const [products, dispatchProducts] = useReducer(productsReducer, productsData)
+
+    useEffect(() => {
+
+        console.log('Os produtops foram atualizados')
+
+    }, [products])
 
 
 
@@ -55,7 +80,10 @@ export function SetimaAula() {
 
             setFormularioErro(false)
 
-            setAllProducts([...allProducts, novoProdutoCadastrado])
+            dispatchProducts({ type: 'add', payload: novoProdutoCadastrado })
+            // setAllProducts([...allProducts, novoProdutoCadastrado])
+
+            console.log(products)
 
             setNomeProduto('')
             precoProduto('')
@@ -106,10 +134,11 @@ export function SetimaAula() {
 
             <section className='products'>
                 {
-                    allProducts.map(
+                    products.map(
                         product => {
                             return (
                                 <SetimaAulaCardProduto
+                                    onDeleteProduct={id => dispatchProducts({type: 'remove', payload: id})}
                                     productData={product}
                                 />
                             )

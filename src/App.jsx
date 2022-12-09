@@ -19,6 +19,7 @@ import { ToDo } from "./pages/ToDo"
 import { ThemeProvider } from "./hooks/useTheme"
 import { Configurations } from "./pages/Configurations"
 import { LanguageProvider } from "./hooks/useLanguage"
+import { VigesimaQuartaAula } from "./lessons/VigesimaQuartaAula"
 
 function App() {
 
@@ -58,6 +59,10 @@ function App() {
         {
           path: 'decima-quinta-aula',
           element: <DecimaQuintaAula />
+        },
+        {
+          path: 'vigesima-quarta-aula',
+          element: <VigesimaQuartaAula />
         },
         {
           path: 'configurations',

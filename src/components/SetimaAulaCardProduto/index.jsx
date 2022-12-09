@@ -2,11 +2,11 @@ import './style.scss'
 
 export function SetimaAulaCardProduto(props) {
 
-    function comprarProduto() {
+    // function comprarProduto() {
 
-        console.log(props.productData)
+    //     console.log(props.productData)
 
-    }
+    // }
 
     return (
 
@@ -16,7 +16,7 @@ export function SetimaAulaCardProduto(props) {
                 <h1>{props.productData.name}</h1>
                 <span>R$ {props.productData.price},00</span>
             </div>
-            <button onClick={comprarProduto}>COmprar</button>
+            <button onClick={() => props.onDeleteProduct(props.productData.id)}>Deletar</button>
         </div>
 
     )

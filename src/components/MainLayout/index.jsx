@@ -59,6 +59,9 @@ export function MainLayout() {
                         <li>
                             <Link to="decima-quinta-aula">Decima Quinta Aula</Link>
                         </li>
+                        <li>
+                            <Link to="vigesima-quarta-aula">Vigésima Quarta Aula</Link>
+                        </li>
                     </ul>
                 </section>
                 <section>
